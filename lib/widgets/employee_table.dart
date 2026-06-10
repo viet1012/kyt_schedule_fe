@@ -6,11 +6,12 @@ import 'app_panel.dart';
 class EmployeeTable extends StatelessWidget {
   final List<Employee> employees;
   final void Function(int index) onDelete;
-
+  final double height;
   const EmployeeTable({
     super.key,
     required this.employees,
     required this.onDelete,
+    this.height = 520,
   });
 
   @override
@@ -23,7 +24,7 @@ class EmployeeTable extends StatelessWidget {
         backgroundColor: Colors.white,
       ),
       child: SizedBox(
-        height: 520,
+        height: height,
         child: SingleChildScrollView(
           child: DataTable(
             headingRowColor: WidgetStateProperty.all(Colors.grey.shade100),

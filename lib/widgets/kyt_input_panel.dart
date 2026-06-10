@@ -8,7 +8,12 @@ class KytInputPanel extends StatelessWidget {
   final TextEditingController nameCtrl;
   final TextEditingController groupCtrl;
   final TextEditingController positionCtrl;
+
+  final String selectedFac;
+  final ValueChanged<String> onFacChanged;
+
   final DateTime startDate;
+
   final VoidCallback onAddEmployee;
   final VoidCallback onPickDate;
   final VoidCallback onGenerate;
@@ -19,6 +24,8 @@ class KytInputPanel extends StatelessWidget {
     required this.nameCtrl,
     required this.groupCtrl,
     required this.positionCtrl,
+    required this.selectedFac,
+    required this.onFacChanged,
     required this.startDate,
     required this.onAddEmployee,
     required this.onPickDate,
@@ -42,10 +49,35 @@ class KytInputPanel extends StatelessWidget {
           isDense: true,
           filled: true,
           fillColor: Colors.white,
-          border: OutlineInputBorder(
-            borderRadius: BorderRadius.circular(12),
-          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
         ),
+      ),
+    );
+  }
+
+  Widget _facDropdown() {
+    return SizedBox(
+      width: 130,
+      height: 44,
+      child: DropdownButtonFormField<String>(
+        value: selectedFac,
+        decoration: InputDecoration(
+          labelText: 'FAC',
+          isDense: true,
+          filled: true,
+          fillColor: Colors.white,
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
+        ),
+        items: const [
+          DropdownMenuItem(value: 'Fac_1', child: Text('Fac_1')),
+          DropdownMenuItem(value: 'Fac_2', child: Text('Fac_2')),
+          DropdownMenuItem(value: 'Fac_3', child: Text('Fac_3')),
+          DropdownMenuItem(value: 'Fac_4', child: Text('Fac_4')),
+        ],
+        onChanged: (value) {
+          if (value == null) return;
+          onFacChanged(value);
+        },
       ),
     );
   }
@@ -64,10 +96,19 @@ class KytInputPanel extends StatelessWidget {
               runSpacing: 10,
               crossAxisAlignment: WrapCrossAlignment.center,
               children: [
+                _facDropdown(),
                 _inputField(controller: msnvCtrl, label: 'MSNV', width: 110),
-                _inputField(controller: nameCtrl, label: 'Họ và tên', width: 230),
+                _inputField(
+                  controller: nameCtrl,
+                  label: 'Họ và tên',
+                  width: 230,
+                ),
                 _inputField(controller: groupCtrl, label: 'Group', width: 140),
-                _inputField(controller: positionCtrl, label: 'Chức vụ', width: 160),
+                _inputField(
+                  controller: positionCtrl,
+                  label: 'Chức vụ',
+                  width: 160,
+                ),
                 SizedBox(
                   height: 44,
                   child: FilledButton.icon(
@@ -101,7 +142,7 @@ class KytInputPanel extends StatelessWidget {
                 const SizedBox(width: 6),
                 Expanded(
                   child: Text(
-                    'Lịch chỉ chạy từ Thứ 3 đến Thứ 6. Xóa nhân viên xong bấm Tạo lịch để tự dồn lại.',
+                    'Lịch chạy riêng theo từng FAC. Nhân viên mới sẽ tham gia từ round tiếp theo.',
                     style: TextStyle(color: Colors.grey.shade700),
                   ),
                 ),
